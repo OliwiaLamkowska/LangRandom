@@ -10,7 +10,6 @@
   <header>
     <h1>🌍 Witamy w LangRandom!</h1>
   </header>
-
   <main>
     <section class="controls">
       <label for="language">Wybierz język:</label>
@@ -23,27 +22,21 @@
         <option value="fr">Francuski</option>
         <option value="en">Angielski</option>
       </select>
-
       <br />
       <button onclick="drawWord()">Wylosuj słowo</button>
     </section>
-
     <div id="wordBox" class="word-box"></div>
-
     <div class="quiz-section">
       <h3>Mini Quiz</h3>
       <div id="quizBox"></div>
     </div>
-
     <div class="culture-box" id="cultureBox">
       🌍 Poznawaj języki i kultury Europy!
     </div>
   </main>
-
   <footer>
     © 2025 LangRandom.com
   </footer>
-
   <script>
     const wordList = {
       pl: [
@@ -104,7 +97,6 @@
       const quizBox = document.getElementById("quizBox");
 
       const list = wordList[lang];
-
       if (!list || list.length === 0) {
         box.innerHTML = "<p>Brak danych dla tego języka.</p>";
         quizBox.innerHTML = "";
@@ -117,7 +109,6 @@
         <p><strong>Definicja:</strong> ${word.definition}</p>
         <p><strong>Przykład:</strong> ${word.example}</p>
       `;
-
       renderQuiz(word, list);
     }
 
