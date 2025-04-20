@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LangRandom – losuj słówka i ucz się języków!</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body id="pageBody">
+  <header>
+    <h1>🌍 Witamy w LangRandom!</h1>
+  </header>
+
+  <main>
+    <section class="controls">
+      <label for="language">Wybierz język:</label>
+      <select id="language" onchange="updateTheme()">
+        <option value="pl">Polski</option>
+        <option value="ua">Ukraiński</option>
+        <option value="cs">Czeski</option>
+        <option value="sk">Słowacki</option>
+        <option value="it">Włoski</option>
+        <option value="fr">Francuski</option>
+        <option value="en">Angielski</option>
+      </select>
+
+      <br />
+      <button onclick="drawWord()">Wylosuj słowo</button>
+    </section>
+
+    <div id="wordBox" class="word-box"></div>
+
+    <div class="quiz-section">
+      <h3>Mini Quiz</h3>
+      <div id="quizBox"></div>
+    </div>
+
+    <div class="culture-box" id="cultureBox">
+      🌍 Poznawaj języki i kultury Europy!
+    </div>
+  </main>
+
+  <footer>
+    © 2025 LangRandom.com
+  </footer>
+
+  <script>
+    const wordList = {
+      pl: [
+        { word: "przemyślenie", definition: "akt dokładnego zastanowienia się", example: "To wymaga głębokiego przemyślenia." },
+        { word: "istotny", definition: "bardzo ważny, kluczowy", example: "To istotny element projektu." },
+        { word: "nawiązanie", definition: "utworzenie relacji lub kontaktu", example: "Nawiązanie kontaktu było kluczowe." }
+      ],
+      en: [
+        { word: "relevant", definition: "closely connected or appropriate", example: "The data is highly relevant to the study." },
+        { word: "comprehensive", definition: "complete and including everything", example: "He gave a comprehensive explanation." },
+        { word: "challenge", definition: "a difficult task or situation", example: "This is a real challenge for the team." }
+      ],
+      fr: [
+        { word: "pertinent", definition: "approprié ou lié au sujet", example: "C'est un point très pertinent." },
+        { word: "défi", definition: "situation difficile à surmonter", example: "Ce projet est un vrai défi." },
+        { word: "soutenir", definition: "apporter de l'aide ou du support", example: "Il faut soutenir nos collègues." }
+      ],
+      it: [
+        { word: "fondamentale", definition: "molto importante, essenziale", example: "La comunicazione è fondamentale." },
+        { word: "sfida", definition: "una situazione difficile o una prova", example: "È una vera sfida." },
+        { word: "conoscenza", definition: "insieme delle informazioni", example: "La conoscenza è potere." }
+      ],
+      ua: [
+        { word: "важливий", definition: "має велике значення", example: "Це дуже важливе питання." },
+        { word: "знання", definition: "сукупність інформації", example: "Знання — це сила." },
+        { word: "підтримка", definition: "допомога або сприяння", example: "Ми потребуємо підтримки." }
+      ],
+      cs: [
+        { word: "významný", definition: "mající důležitost", example: "Je to významný krok vpřed." },
+        { word: "výzva", definition: "obtížný úkol nebo zkouška", example: "Je to skutečná výzva." },
+        { word: "znalost", definition: "soubor vědomostí", example: "Znalost je síla." }
+      ],
+      sk: [
+        { word: "dôležitý", definition: "majúci veľký význam", example: "Je to veľmi dôležité rozhodnutie." },
+        { word: "znalosť", definition: "súbor poznatkov", example: "Znalosť je moc." },
+        { word: "výzva", definition: "náročná úloha", example: "Toto je veľká výzva." }
+      ]
+    };
+
+    function updateTheme() {
+      const lang = document.getElementById("language").value;
+      const cultureBox = document.getElementById("cultureBox");
+      const cultureFacts = {
+        pl: "🇵🇱 Polska słynie z pierogów i noblistki Marii Skłodowskiej-Curie.",
+        ua: "🇺🇦 Ukraina ma alfabet z 33 literami i tradycyjne hafty – wyszywanki.",
+        cs: "🇨🇿 Czesi uwielbiają piwo i mają piękną Pragę.",
+        sk: "🇸🇰 Słowacja to góry, jaskinie i tradycyjna kuchnia.",
+        it: "🇮🇹 Włochy to kraj pizzy i opery.",
+        fr: "🇫🇷 Francja to kraj mody, sztuki i wina.",
+        en: "🇬🇧 Anglia to Big Ben i herbata o 17:00."
+      };
+      cultureBox.innerText = cultureFacts[lang] || "🌍 Poznawaj języki i kultury Europy!";
+    }
+
+    function drawWord() {
+      const lang = document.getElementById("language").value;
+      const box = document.getElementById("wordBox");
+      const quizBox = document.getElementById("quizBox");
+
+      const list = wordList[lang];
+
+      if (!list || list.length === 0) {
+        box.innerHTML = "<p>Brak danych dla tego języka.</p>";
+        quizBox.innerHTML = "";
+        return;
+      }
+
+      const word = list[Math.floor(Math.random() * list.length)];
+      box.innerHTML = `
+        <p><strong>Słowo:</strong> ${word.word}</p>
+        <p><strong>Definicja:</strong> ${word.definition}</p>
+        <p><strong>Przykład:</strong> ${word.example}</p>
+      `;
+
+      renderQuiz(word, list);
+    }
+
+    function renderQuiz(correctWord, list) {
+      const correct = correctWord.word;
+      const distractors = list.filter(w => w.word !== correct).map(w => w.word);
+      while (distractors.length < 4) distractors.push("losowy");
+      const options = [...new Set([correct, ...distractors.slice(0, 4)])].sort(() => Math.random() - 0.5);
+
+      const quizBox = document.getElementById("quizBox");
+      quizBox.innerHTML = "<p>Wybierz poprawne słowo:</p>";
+      options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.innerText = option;
+        btn.onclick = () => {
+          quizBox.innerHTML = option === correct
+            ? "<p>✅ Brawo! To poprawna odpowiedź!</p>"
+            : `<p>❌ Niepoprawnie. Prawidłowa odpowiedź to: ${correct}</p>`;
+        };
+        quizBox.appendChild(btn);
+      });
+    }
+  </script>
+</body>
+</html>
