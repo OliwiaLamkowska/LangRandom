@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LangRandom – losuj słówka i ucz się języków!</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body id="pageBody">
+  <header>
+    <h1>🌍 Witamy w LangRandom!</h1>
+  </header>
+  <main>
+    <section class="controls">
+      <button onclick="drawInterestingWord()">🧠 Nowe słowo</button>
+      <button onclick="drawCuriosity()">🌐 Ciekawostka ze świata</button>
+      <button onclick="drawCuriosity()">➕ Więcej ciekawostek</button>
+    </section>
+    <div id="wordBox" class="word-box"></div>
+    <div class="culture-box" id="cultureBox">
+      🌍 Poznawaj języki i kultury Europy!
+    </div>
+  </main>
+  <footer>
+    © 2025 LangRandom.com
+  </footer>
+  <script>
+    async function drawInterestingWord() {
+      const box = document.getElementById("wordBox");
+      box.innerHTML = "🔄 Ładowanie słowa z AI...";
+
+      try {
+        const response = await fetch("http://localhost:3000/generate-word", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        });
+        const data = await response.json();
+        box.innerHTML = `<p><strong>🧠 Nowe słowo (OpenAI):</strong></p><pre>${data.result}</pre>`;
+      } catch (err) {
+        box.innerHTML = "❌ Błąd podczas pobierania słowa z AI.";
+      }
+    }
+
+    function drawCuriosity() {
+      function getRandomElement(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function drawCuriosity() {
+  const times = [
+    "W starożytności", "W XIX wieku", "W średniowieczu", "W 1970 roku", "W epoce lodowcowej",
+    "W czasach imperium rzymskiego", "W 1843 roku", "W erze wikingów", "W epoce brązu",
+    "Podczas rewolucji przemysłowej", "W czasach faraonów", "W epoce odkryć geograficznych"
+  ];
+
+  const places = [
+    "w Japonii", "w Brazylii", "na Islandii", "w Indiach", "w Peru", "w Etiopii", "na Syberii",
+    "w Portugalii", "w Tanzanii", "na Filipinach", "w Mongolii", "na Madagaskarze", "w Nowej Zelandii"
+  ];
+
+  const discoveries = [
+    "odkryto tajemniczy rytuał, który łączył muzykę z ruchem planet",
+    "znaleziono podziemne miasto pełne glinianych figurek",
+    "zaobserwowano masowe pojawianie się zielonych meteorów",
+    "zbudowano świątynię w całości z kości wieloryba",
+    "powstało plemię, które komunikowało się wyłącznie śpiewem",
+    "zarejestrowano deszcz żab trwający kilka dni",
+    "odnotowano pierwszy przypadek naturalnego lustrzanego jeziora",
+    "rozwinięto system znaków dymnych precyzyjnych jak alfabet",
+    "używano liści jako naturalnej mapy nawigacyjnej",
+    "skonstruowano maszynę parową napędzaną gejzerami",
+    "odkryto język gwizdany używany przez pasterzy w górach",
+    "zorganizowano igrzyska na soplach lodu",
+    "stworzono mechanizm z trybami inspirowanymi owadami"
+  ];
+
+  const time = getRandomElement(times);
+  const place = getRandomElement(places);
+  const discovery = getRandomElement(discoveries);
+
+  const curiosity = `${time} ${place} ${discovery}.`;
+
+  const box = document.getElementById("wordBox");
+  box.innerHTML = `
+    <p><strong>🌐 Ciekawostka ze świata (AI):</strong></p>
+    <p>${curiosity}</p>
+  `;
+}
+
+      const times = ["W starożytności", "W XIX wieku", "W średniowieczu", "W 1970 roku", "W epoce lodowcowej", "W czasach imperium rzymskiego", "W 1843 roku"];
+      const places = ["w Japonii", "w Brazylii", "na Islandii", "w Indiach", "w Peru", "w Etiopii", "na Syberii", "w Portugalii"];
+      const discoveries = [
+        "odkryto tajemniczy rytuał, który łączył muzykę z ruchem planet",
+        "znaleziono podziemne miasto pełne glinianych figurek",
+        "zaobserwowano masowe pojawianie się zielonych meteorów",
+        "zbudowano świątynię w całości z kości wieloryba",
+        "powstało plemię, które komunikowało się wyłącznie śpiewem",
+        "zarejestrowano deszcz żab trwający kilka dni",
+        "odnotowano pierwszy przypadek naturalnego lustrzanego jeziora",
+        "rozwinięto system znaków dymnych precyzyjnych jak alfabet"
+      ];
+
+      const time = times[Math.floor(Math.random() * times.length)];
+      const place = places[Math.floor(Math.random() * places.length)];
+      const discovery = discoveries[Math.floor(Math.random() * discoveries.length)];
+
+      const curiosity = `${time} ${place} ${discovery}.`;
+
+      const box = document.getElementById("wordBox");
+      box.innerHTML = `
+        <p><strong>🌐 Ciekawostka ze świata (AI):</strong></p>
+        <p>${curiosity}</p>
+      `;
+    }
+  </script>
+</body>
+</html>
